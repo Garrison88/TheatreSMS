@@ -13,15 +13,19 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 public class SettingsActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
 
     BroadcastReceiver receiver;
+    private int volume_level = 0;
+    private AudioManager am;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        am = (AudioManager) getSystemService(AUDIO_SERVICE);
         setContentView(R.layout.layout_settings);
 
         Switch toggle_settings = (Switch) findViewById(R.id.activation_switch);
@@ -75,11 +79,12 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-
-
         if (isChecked) {
 
-            Util.manipulatePhone((AudioManager)getSystemService(Context.AUDIO_SERVICE), getWindow(), true);
+            volume_level= am.getStreamVolume(AudioManager.STREAM_RING);
+//            Toast.makeText(this, volume_level+"", Toast.LENGTH_SHORT).show();
+
+            Util.manipulatePhone(am, getWindow(), true);
 
 
 
@@ -93,33 +98,37 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
 
 
         } else{
-            Util.manipulatePhone((AudioManager)getSystemService(Context.AUDIO_SERVICE), getWindow(), false);
-            unregisterReceiver(receiver);
+            Util.manipulatePhone(am, getWindow(), false);
             this.finish();
         }
 
         }
 
-    public void onBackPressed(){
+    public void onBackPressed() {
 
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.dialog_exit_title))
-                .setMessage(getString(R.string.dialog_exit_message))
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+        Switch toggle = (Switch) findViewById(R.id.activation_switch);
+        if(toggle.isChecked()) {
+            new AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.dialog_exit_title))
+                    .setMessage(getString(R.string.dialog_exit_message))
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
 
-                        SettingsActivity.this.finish();
+                            SettingsActivity.this.finish();
 
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
 
+        }else{
+            this.finish();
+        }
     }
 
 public void onDestroy(){
@@ -128,10 +137,14 @@ public void onDestroy(){
     super.onDestroy();
     try {
         unregisterReceiver(receiver);
-    } catch(Exception e){
-        //ignore
-    }
 
+    } catch(Exception e){
+        e.printStackTrace();
+    }
+    am.setStreamVolume(
+            AudioManager.STREAM_RING,
+            volume_level,
+            0);
 
 }
     }

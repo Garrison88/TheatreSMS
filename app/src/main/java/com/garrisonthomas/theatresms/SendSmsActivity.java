@@ -86,7 +86,7 @@ public class SendSmsActivity extends Activity {
         }
 
     public void onNewIntent(Intent intent){
-//        Toast.makeText(this, "texty tet", Toast.LENGTH_SHORT).show();
+
         String senderNumber = intent.getStringExtra("msgFrom");
         String senderMessage = intent.getStringExtra("msgBody");
         String senderTimeStamp = intent.getStringExtra("timeStamp");
