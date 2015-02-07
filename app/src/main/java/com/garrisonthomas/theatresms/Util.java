@@ -4,9 +4,6 @@ import android.media.AudioManager;
 import android.view.Window;
 import android.view.WindowManager;
 
-/**
- * Created by Android on 2/2/2015.
- */
 public class Util {
 
     public static void manipulatePhone(AudioManager audio, Window window, boolean enabled){

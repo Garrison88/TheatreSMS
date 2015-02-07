@@ -3,10 +3,14 @@ package com.garrisonthomas.theatresms;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.provider.ContactsContract;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +25,7 @@ public class SendSmsActivity extends Activity {
 //    public ListView msgList;
 //    public ArrayList<ListModel> list;
 //    public ListviewAdapter lvAdapter;
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +90,21 @@ public class SendSmsActivity extends Activity {
 
         }
 
+    private String getContactNameFromNumber(String number) {
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
+                Uri.encode(number));
+
+        Cursor cursor = SendSmsActivity.this.getContentResolver().query(uri,
+                new String[] { ContactsContract.PhoneLookup.DISPLAY_NAME }, null, null, null);
+        if (cursor.moveToFirst()) {
+            name = cursor.getString(cursor
+                    .getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+        }
+
+        return name;
+
+    }
+
     public void onNewIntent(Intent intent){
 
         String senderNumber = intent.getStringExtra("msgFrom");
@@ -99,17 +119,11 @@ public class SendSmsActivity extends Activity {
         TextView senderBody_tv = (TextView)findViewById(R.id.sender_message_body);
         senderBody_tv.setText(senderMessage);
         TextView senderPhoneNumber_tv = (TextView)findViewById(R.id.sender_phone_number);
-        senderPhoneNumber_tv.setText(senderNumber);
+        senderPhoneNumber_tv.setText(getContactNameFromNumber(senderNumber)+" ("+senderNumber+")");
         TextView senderTimeStamp_tv = (TextView)findViewById(R.id.sender_time_stamp);
-        senderTimeStamp_tv.setText(senderTimeStamp);
+        senderTimeStamp_tv.setText((getString(R.string.sender_time_stamp)+": "+senderTimeStamp));
 
         RelativeLayout userLayout = (RelativeLayout) findViewById(R.id.user_message_layout);
         userLayout.setVisibility(View.INVISIBLE);
-    }
-    //TODO: create onResume and put vibration code there
-    public void onResume() {
-
-
-
     }
 }

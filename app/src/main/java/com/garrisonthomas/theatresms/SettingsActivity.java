@@ -9,11 +9,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.telephony.SmsMessage;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.Toast;
 
 public class SettingsActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
 
@@ -50,15 +51,12 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
                                 msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
                                 msgFrom = msgs[i].getOriginatingAddress();
                                 String msgBody = msgs[i].getMessageBody();
-
-//                                    TextView senderBody = (TextView) findViewById(R.id.sender_message_body);
-//                                    senderBody.setText(msgBody);
-
                                 Intent sendSMSIntent = new Intent(context, SendSmsActivity.class);
                                 sendSMSIntent.putExtra("Enabled", true);
                                 sendSMSIntent.putExtra("msgFrom", msgFrom);
                                 sendSMSIntent.putExtra("msgBody", msgBody);
-                                sendSMSIntent.putExtra("timeStamp", DateHelper.getDateTimeFormattedFromMilliseconds(System.currentTimeMillis()));
+                                sendSMSIntent.putExtra("timeStamp", DateHelper.
+                                        getDateTimeFormattedFromMilliseconds(System.currentTimeMillis()));
                                 startActivity(sendSMSIntent);
 
 
@@ -132,7 +130,6 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
     }
 
 public void onDestroy(){
-
 
     super.onDestroy();
     try {

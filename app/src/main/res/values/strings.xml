@@ -16,7 +16,7 @@
     <!-- layout_settings -->
 
     <string name="title_activity_settings">SettingsActivity</string>
-    <string name="app_description_settings">SMS Dark will make your phone theatre-friendly!
+    <string name="app_description_settings">Theatre SMS will make your phone theatre-friendly!
         Respond to text messages knowing you are causing the least amount of
         disruption possible to your fellow movie-goers</string>
     <string name="sender_time_stamp">Message received at</string>
