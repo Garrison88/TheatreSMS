@@ -58,7 +58,7 @@ public class DateHelper {
 
     public static  String getDateTimeFormattedFromMilliseconds(long milliseconds)
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss",Locale.CANADA);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm",Locale.CANADA);
         Date resultdate = new Date(milliseconds);
         sdf.setTimeZone(TimeZone.getDefault());
         return sdf.format(resultdate);

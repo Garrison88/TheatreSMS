@@ -11,23 +11,26 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.provider.ContactsContract;
 import android.telephony.SmsMessage;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
 public class SettingsActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
 
     BroadcastReceiver receiver;
-    private int volume_level = 0;
+    private int volume_level;
     private AudioManager am;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        am = (AudioManager) getSystemService(AUDIO_SERVICE);
         setContentView(R.layout.layout_settings);
+
+        am = (AudioManager) getSystemService(AUDIO_SERVICE);
 
         Switch toggle_settings = (Switch) findViewById(R.id.activation_switch);
 
@@ -56,8 +59,11 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
                                 sendSMSIntent.putExtra("msgFrom", msgFrom);
                                 sendSMSIntent.putExtra("msgBody", msgBody);
                                 sendSMSIntent.putExtra("timeStamp", DateHelper.
-                                        getDateTimeFormattedFromMilliseconds(System.currentTimeMillis()));
+                                        getDateTimeFormattedFromMilliseconds(System.
+                                                currentTimeMillis()));
                                 startActivity(sendSMSIntent);
+                                Vibrator vibe = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                                vibe.vibrate(100);
 
 
                             }
@@ -75,11 +81,17 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
         if (isChecked) {
 
-            volume_level= am.getStreamVolume(AudioManager.STREAM_RING);
+            volume_level= am.getStreamVolume(AudioManager.RINGER_MODE_SILENT);
 //            Toast.makeText(this, volume_level+"", Toast.LENGTH_SHORT).show();
 
             Util.manipulatePhone(am, getWindow(), true);
@@ -96,8 +108,10 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
 
 
         } else{
-            Util.manipulatePhone(am, getWindow(), false);
-            this.finish();
+            am.setStreamVolume(
+                    AudioManager.STREAM_RING,
+                    volume_level,
+                    0);
         }
 
         }
@@ -105,7 +119,7 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
     public void onBackPressed() {
 
         Switch toggle = (Switch) findViewById(R.id.activation_switch);
-        if(toggle.isChecked()) {
+        if (toggle.isChecked()) {
             new AlertDialog.Builder(this)
                     .setTitle(getString(R.string.dialog_exit_title))
                     .setMessage(getString(R.string.dialog_exit_message))
@@ -131,6 +145,11 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
 
 public void onDestroy(){
 
+    am.setStreamVolume(
+            AudioManager.STREAM_RING,
+            volume_level,
+            0);
+
     super.onDestroy();
     try {
         unregisterReceiver(receiver);
@@ -138,11 +157,9 @@ public void onDestroy(){
     } catch(Exception e){
         e.printStackTrace();
     }
-    am.setStreamVolume(
-            AudioManager.STREAM_RING,
-            volume_level,
-            0);
+
 
 }
-    }
+
+}
 

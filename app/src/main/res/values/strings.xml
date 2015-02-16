@@ -6,12 +6,11 @@
     <string name="edit_text_hint">Type message</string>
     <string name="title_activity_send_sms">SendSms</string>
     <string name="user_name">Me</string>
-    <string name="sender_message_text">Incoming text will be displayed here</string>
 
     <!-- Dialog box -->
 
-    <string name="dialog_exit_message">Are you sure? This may cause the screen to brighten</string>
-    <string name="dialog_exit_title">Exit</string>
+    <string name="dialog_exit_message">This may cause the screen to brighten</string>
+    <string name="dialog_exit_title">Are you sure you want to exit?</string>
 
     <!-- layout_settings -->
 
@@ -19,9 +18,9 @@
     <string name="app_description_settings">Theatre SMS will make your phone theatre-friendly!
         Respond to text messages knowing you are causing the least amount of
         disruption possible to your fellow movie-goers</string>
-    <string name="sender_time_stamp">Message received at</string>
     <string name="toggle_description_settings">Activating this switch will:\n\n\t- Dim your screen\n\t- Set your
-        phone to vibrate\n\t- Change the text to an easily read colour\n\t- Display the most recent text
+        phone to silent-mode\n\t- Set the text to an easily read colour\n\t- Display the most recent text
         message you receive\n\nYou can then respond while respecting those around you </string>
+    <string name="settings_title">Theatre SMS</string>
 
 </resources>

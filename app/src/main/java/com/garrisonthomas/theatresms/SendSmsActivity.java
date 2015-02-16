@@ -10,15 +10,12 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SendSmsActivity extends Activity {
 
@@ -32,8 +29,7 @@ public class SendSmsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.message_layout);
 
-        Vibrator vibe = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE) ;
-        vibe.vibrate(100);
+
 
         onNewIntent(getIntent());
 
@@ -63,32 +59,34 @@ public class SendSmsActivity extends Activity {
 
     public void send_msg(View view) {
 
-        EditText etMessageDescription = (EditText)findViewById(R.id.edit_text_send_sms);
-        TextView senderPhoneNumberTextView = (TextView) findViewById(R.id.sender_phone_number);
+        EditText etMessageDescription = (EditText) findViewById(R.id.edit_text_send_sms);
+        TextView senderPhoneNumberTextView = (TextView) findViewById(R.id.sender_id);
 
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(senderPhoneNumberTextView.getText().toString(), null,
-                etMessageDescription.getText().toString(), null, null);
+        if (etMessageDescription.length() == 0) {
+            // do nothing
+        } else {
 
-        TextView userTime = (TextView) findViewById(R.id.time_stamp);
-        userTime.setText(DateHelper.getDateTimeFormattedFromMilliseconds(System.currentTimeMillis()));
+            SmsManager sms = SmsManager.getDefault();
+            sms.sendTextMessage(senderPhoneNumberTextView.getText().toString(), null,
+                    etMessageDescription.getText().toString(), null, null);
 
-        TextView phoneNumber = (TextView) findViewById(R.id.phone_number);
-        phoneNumber.setText(getString(R.string.user_name));
+            TextView userTime = (TextView) findViewById(R.id.time_stamp);
+            userTime.setText(DateHelper.getDateTimeFormattedFromMilliseconds(System.currentTimeMillis()));
 
-        TextView userMessageBody = (TextView) findViewById(R.id.message_body);
-        userMessageBody.setText(etMessageDescription.getText());
+            TextView phoneNumber = (TextView) findViewById(R.id.user_id);
+            phoneNumber.setText(getString(R.string.user_name));
 
-        RelativeLayout userLayout = (RelativeLayout) findViewById(R.id.user_message_layout);
-        userLayout.setVisibility(View.VISIBLE);
+            TextView userMessageBody = (TextView) findViewById(R.id.message_body);
+            userMessageBody.setText(etMessageDescription.getText());
 
-        InputMethodManager imm = (InputMethodManager)getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(etMessageDescription.getWindowToken(), 0);
+            InputMethodManager imm = (InputMethodManager) getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(etMessageDescription.getWindowToken(), 0);
 
-        etMessageDescription.setText("");
+            etMessageDescription.setText("");
 
         }
+    }
 
     private String getContactNameFromNumber(String number) {
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
@@ -118,12 +116,10 @@ public class SendSmsActivity extends Activity {
 
         TextView senderBody_tv = (TextView)findViewById(R.id.sender_message_body);
         senderBody_tv.setText(senderMessage);
-        TextView senderPhoneNumber_tv = (TextView)findViewById(R.id.sender_phone_number);
-        senderPhoneNumber_tv.setText(getContactNameFromNumber(senderNumber)+" ("+senderNumber+")");
+        TextView senderPhoneNumber_tv = (TextView)findViewById(R.id.sender_id);
+        senderPhoneNumber_tv.setText(getContactNameFromNumber(senderNumber)+"\n("+senderNumber+")");
         TextView senderTimeStamp_tv = (TextView)findViewById(R.id.sender_time_stamp);
-        senderTimeStamp_tv.setText((getString(R.string.sender_time_stamp)+": "+senderTimeStamp));
+        senderTimeStamp_tv.setText(senderTimeStamp);
 
-        RelativeLayout userLayout = (RelativeLayout) findViewById(R.id.user_message_layout);
-        userLayout.setVisibility(View.INVISIBLE);
     }
 }

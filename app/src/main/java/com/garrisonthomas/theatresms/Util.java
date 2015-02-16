@@ -9,9 +9,9 @@ public class Util {
     public static void manipulatePhone(AudioManager audio, Window window, boolean enabled){
 
         if (enabled) {
-            // set phone to 'vibrate mode'
+            // set phone to 'silent mode'
 
-            audio.setRingerMode(1);
+            audio.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 
             // dim screen when app starts
 
@@ -19,7 +19,7 @@ public class Util {
             layout.screenBrightness = 0F;
             window.setAttributes(layout);
         } else{
-            //TODO: figure out users current state of volume and set it back here (brightness auto changed)
+            // do nothing
         }
 
 
