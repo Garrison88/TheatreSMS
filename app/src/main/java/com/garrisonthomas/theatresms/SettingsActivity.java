@@ -15,8 +15,11 @@ import android.os.Vibrator;
 import android.provider.ContactsContract;
 import android.telephony.SmsMessage;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class SettingsActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
 
@@ -81,8 +84,9 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onPause() {
+
+        super.onPause();
 
     }
 
@@ -92,26 +96,24 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
         if (isChecked) {
 
             volume_level= am.getStreamVolume(AudioManager.RINGER_MODE_SILENT);
-//            Toast.makeText(this, volume_level+"", Toast.LENGTH_SHORT).show();
 
             Util.manipulatePhone(am, getWindow(), true);
-
-
 
             IntentFilter filter = new IntentFilter();
             filter.addAction("android.provider.Telephony.SMS_RECEIVED");
 
-
-
             registerReceiver(receiver, filter);
 
-
+            TextView tv = (TextView) SettingsActivity.this.findViewById(R.id.textview_enjoy_movie);
+            tv.setVisibility(View.VISIBLE);
 
         } else{
             am.setStreamVolume(
                     AudioManager.STREAM_RING,
                     volume_level,
                     0);
+            this.finish();
+
         }
 
         }

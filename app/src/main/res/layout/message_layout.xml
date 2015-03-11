@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/sender_id"
-        android:textColor="#ff00c8"
+        android:textColor="#ffe1e1e1"
         android:textSize="15sp"/>
 
     <TextView
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/sender_message_body"
         android:layout_below="@+id/sender_id"
-        android:textColor="#00FFFF"
+        android:textColor="#7C00FFFF"
         android:textSize="18sp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"/>
@@ -45,7 +45,7 @@
         android:layout_below="@+id/sender_message_body"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textColor="#ff696969"
+        android:textColor="#ffe1e1e1"
         android:textSize="15sp"/>
 
 </RelativeLayout>
@@ -53,7 +53,7 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="5dp"
-        android:background="#9b30ff"
+        android:background="#7c9b30ff"
         android:layout_below="@+id/sender_message_layout"
         android:id="@+id/divider"/>
 
@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/user_id"
-            android:textColor="#ff00c8"
+            android:textColor="#ffe1e1e1"
             android:textSize="15sp"/>
 
         <TextView
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/message_body"
             android:layout_below="@+id/user_id"
-            android:textColor="#00FFFF"
+            android:textColor="#7C00FFFF"
             android:textSize="18sp"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"/>
@@ -88,7 +88,7 @@
             android:layout_below="@+id/message_body"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:textColor="#ff696969"
+            android:textColor="#ffe1e1e1"
             android:textSize="15sp"/>
 
         </RelativeLayout>
@@ -98,18 +98,20 @@
     </ScrollView>
 
         <EditText
-            android:freezesText="true"
             android:imeOptions="actionNext"
-            android:inputType="textCapSentences"
-            android:background="#ff5f5f5f"
+            android:inputType="textMultiLine|textCapSentences"
+            android:singleLine="false"
+            android:maxLines="5"
+            android:scrollbars="vertical"
+            android:background="#ff4f4f4f"
             android:padding="10dp"
             android:paddingEnd="48dp"
             android:paddingRight="48dp"
             android:hint="@string/edit_text_hint"
-            android:textColor="#00FFFF"
+            android:textColor="#7c00FFFF"
             android:textColorHint="#7c00FFFF"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:id="@+id/edit_text_send_sms"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
@@ -125,7 +127,6 @@
             android:id="@+id/buttonSend"
             android:onClick="send_msg"
             android:layout_alignParentBottom="true"
-            android:layout_alignTop="@+id/edit_text_send_sms"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
