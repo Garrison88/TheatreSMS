@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.view.Menu;
@@ -22,14 +21,36 @@ public class SendSmsActivity extends Activity {
 //    public ListView msgList;
 //    public ArrayList<ListModel> list;
 //    public ListviewAdapter lvAdapter;
+
+    public static final String SENDER_ID = "SENDER_ID";
+    public static final String SENDER_MSG = "SENDER_MSG";
+    public static final String SENDER_TIME = "SENDER_TIME";
+    public static final String USER_ID = "USER_ID";
+    public static final String USER_MSG = "USER_MSG";
+    public static final String USER_TIME = "USER_TIME";
+
+    private String senderId;
+    private String senderMsg;
+    private String senderTime;
+
     String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.message_layout);
+        setContentView(R.layout.layout_message);
 
 
+
+        if (savedInstanceState == null){
+
+        senderId = ("");
+        senderMsg = ("");
+
+
+        }else{
+
+        }
 
         onNewIntent(getIntent());
 

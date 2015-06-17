@@ -60,7 +60,7 @@ public class ListviewAdapter extends BaseAdapter{
         if(convertView==null){
 
             /****** Inflate tabitem.xml file for each row ( Defined below ) *******/
-            vi = inflater.inflate(R.layout.message_layout, null);
+            vi = inflater.inflate(R.layout.layout_message, null);
 
             /****** View Holder Object to contain tabitem.xml file elements ******/
 
