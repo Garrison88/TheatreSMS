@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.provider.ContactsContract;
+import android.support.v7.widget.SwitchCompat;
 import android.telephony.SmsMessage;
 import android.view.View;
 import android.view.WindowManager;
@@ -26,6 +27,9 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
     BroadcastReceiver receiver;
     private int volume_level;
     private AudioManager am;
+    private TextView tv;
+    private SwitchCompat toggle_settings;
+    private Vibrator vibe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,11 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
 
         am = (AudioManager) getSystemService(AUDIO_SERVICE);
 
-        Switch toggle_settings = (Switch) findViewById(R.id.activation_switch);
+        tv = (TextView) findViewById(R.id.textview_enjoy_movie);
+
+        vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        toggle_settings = (SwitchCompat) findViewById(R.id.activation_switch);
 
         toggle_settings.setOnCheckedChangeListener(this);
 
@@ -44,17 +52,17 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
+                if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
                     Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
                     SmsMessage[] msgs = null;
                     String msgFrom;
-                    if (bundle != null){
+                    if (bundle != null) {
                         //---retrieve the SMS message received---
-                        try{
+                        try {
                             Object[] pdus = (Object[]) bundle.get("pdus");
                             msgs = new SmsMessage[pdus.length];
-                            for(int i=0; i<msgs.length; i++){
-                                msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
+                            for (int i = 0; i < msgs.length; i++) {
+                                msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
                                 msgFrom = msgs[i].getOriginatingAddress();
                                 String msgBody = msgs[i].getMessageBody();
                                 Intent sendSMSIntent = new Intent(context, SendSmsActivity.class);
@@ -65,21 +73,18 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
                                         getDateTimeFormattedFromMilliseconds(System.
                                                 currentTimeMillis()));
                                 startActivity(sendSMSIntent);
-                                Vibrator vibe = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
                                 vibe.vibrate(100);
 
 
                             }
-                        }catch(Exception e){
+                        } catch (Exception e) {
 //                            Log.d("Exception caught",e.getMessage());
                             e.printStackTrace();
                         }
                     }
                 }
             }
-
         };
-
 
     }
 
@@ -95,7 +100,7 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
 
         if (isChecked) {
 
-            volume_level= am.getStreamVolume(AudioManager.RINGER_MODE_SILENT);
+//            volume_level = am.getStreamVolume(AudioManager.RINGER_MODE_SILENT);
 
             Util.manipulatePhone(am, getWindow(), true);
 
@@ -104,24 +109,19 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
 
             registerReceiver(receiver, filter);
 
-            TextView tv = (TextView) SettingsActivity.this.findViewById(R.id.textview_enjoy_movie);
-            tv.setVisibility(View.VISIBLE);
+            tv.setText("Enjoy the show!");
 
-        } else{
-            am.setStreamVolume(
-                    AudioManager.STREAM_RING,
-                    volume_level,
-                    0);
+        } else {
+            am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
             this.finish();
 
         }
 
-        }
+    }
 
     public void onBackPressed() {
 
-        Switch toggle = (Switch) findViewById(R.id.activation_switch);
-        if (toggle.isChecked()) {
+        if (toggle_settings.isChecked()) {
             new AlertDialog.Builder(this)
                     .setTitle(getString(R.string.dialog_exit_title))
                     .setMessage(getString(R.string.dialog_exit_message))
@@ -140,28 +140,26 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
-        }else{
+        } else {
             this.finish();
         }
     }
 
-public void onDestroy(){
+    public void onDestroy() {
 
-    am.setStreamVolume(
-            AudioManager.STREAM_RING,
-            volume_level,
-            0);
+        super.onDestroy();
 
-    super.onDestroy();
-    try {
-        unregisterReceiver(receiver);
+        am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 
-    } catch(Exception e){
-        e.printStackTrace();
+        try {
+            unregisterReceiver(receiver);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
-
-
-}
 
 }
 

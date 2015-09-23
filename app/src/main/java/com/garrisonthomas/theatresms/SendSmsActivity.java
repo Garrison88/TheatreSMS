@@ -41,14 +41,13 @@ public class SendSmsActivity extends Activity {
         setContentView(R.layout.layout_message);
 
 
+        if (savedInstanceState == null) {
 
-        if (savedInstanceState == null){
-
-        senderId = ("");
-        senderMsg = ("");
+            senderId = ("");
+            senderMsg = ("");
 
 
-        }else{
+        } else {
 
         }
 
@@ -114,7 +113,7 @@ public class SendSmsActivity extends Activity {
                 Uri.encode(number));
 
         Cursor cursor = SendSmsActivity.this.getContentResolver().query(uri,
-                new String[] { ContactsContract.PhoneLookup.DISPLAY_NAME }, null, null, null);
+                new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
         if (cursor.moveToFirst()) {
             name = cursor.getString(cursor
                     .getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
@@ -124,7 +123,7 @@ public class SendSmsActivity extends Activity {
 
     }
 
-    public void onNewIntent(Intent intent){
+    public void onNewIntent(Intent intent) {
 
         String senderNumber = intent.getStringExtra("msgFrom");
         String senderMessage = intent.getStringExtra("msgBody");
@@ -132,14 +131,14 @@ public class SendSmsActivity extends Activity {
 
         boolean enabled = intent.getBooleanExtra("Enabled", true);
         if (enabled) {
-            Util.manipulatePhone((AudioManager)getSystemService(Context.AUDIO_SERVICE), getWindow(), true);
+            Util.manipulatePhone((AudioManager) getSystemService(Context.AUDIO_SERVICE), getWindow(), true);
         }
 
-        TextView senderBody_tv = (TextView)findViewById(R.id.sender_message_body);
+        TextView senderBody_tv = (TextView) findViewById(R.id.sender_message_body);
         senderBody_tv.setText(senderMessage);
-        TextView senderPhoneNumber_tv = (TextView)findViewById(R.id.sender_id);
-        senderPhoneNumber_tv.setText(getContactNameFromNumber(senderNumber)+"\n("+senderNumber+")");
-        TextView senderTimeStamp_tv = (TextView)findViewById(R.id.sender_time_stamp);
+        TextView senderPhoneNumber_tv = (TextView) findViewById(R.id.sender_id);
+        senderPhoneNumber_tv.setText(getContactNameFromNumber(senderNumber) + "\n(" + senderNumber + ")");
+        TextView senderTimeStamp_tv = (TextView) findViewById(R.id.sender_time_stamp);
         senderTimeStamp_tv.setText(senderTimeStamp);
 
     }

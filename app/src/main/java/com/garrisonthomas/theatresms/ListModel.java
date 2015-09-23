@@ -5,7 +5,7 @@ public class ListModel {
     String smsBody;
     String timeStamp;
 
-    public ListModel (String text1, String text2) {
+    public ListModel(String text1, String text2) {
 
         smsBody = text1;
         timeStamp = text2;

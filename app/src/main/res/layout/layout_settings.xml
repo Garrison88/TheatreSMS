@@ -9,7 +9,7 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#008486">
+        android:background="@color/colorPrimary">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -32,15 +32,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
                 android:textColor="#FFFFFF"
                 android:textSize="30sp"
                 android:id="@+id/textview_enjoy_movie"
                 android:layout_above="@+id/activation_switch"
                 android:text="@string/settings_enjoy_movie"
-                android:padding="10dp"
-                android:visibility="invisible"/>
+                android:padding="10dp"/>
 
-            <Switch
+            <android.support.v7.widget.SwitchCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/activation_switch"

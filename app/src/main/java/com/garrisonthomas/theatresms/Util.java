@@ -6,10 +6,10 @@ import android.view.WindowManager;
 
 public class Util {
 
-    public static void manipulatePhone(AudioManager audio, Window window, boolean enabled){
+    public static void manipulatePhone(AudioManager audio, Window window, boolean enabled) {
 
         if (enabled) {
-            // set phone to 'silent mode'
+            // set phone to 'priority mode'
 
             audio.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 
@@ -18,10 +18,9 @@ public class Util {
             WindowManager.LayoutParams layout = window.getAttributes();
             layout.screenBrightness = 0F;
             window.setAttributes(layout);
-        } else{
+        } else {
             // do nothing
         }
-
 
     }
 
