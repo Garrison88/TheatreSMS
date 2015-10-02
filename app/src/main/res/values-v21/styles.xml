@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <style name="MaterialTheme_v21" parent="AppTheme.NoActionBar">
+
+        <item name="android:fontFamily">roboto-light</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+
+    </style>
+
+</resources>

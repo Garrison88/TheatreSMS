@@ -75,8 +75,8 @@ public class ListviewAdapter extends BaseAdapter {
             /****** View Holder Object to contain tabitem.xml file elements ******/
 
             holder = new ViewHolder();
-            holder.text = (TextView) vi.findViewById(R.id.message_body);
-            holder.text_right = (TextView) vi.findViewById(R.id.time_stamp);
+            holder.text = (TextView) vi.findViewById(R.id.user_message_body);
+            holder.text_right = (TextView) vi.findViewById(R.id.user_time_stamp);
 
             /************  Set holder with LayoutInflater ************/
             vi.setTag(holder);

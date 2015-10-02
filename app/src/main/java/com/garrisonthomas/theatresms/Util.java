@@ -4,9 +4,11 @@ import android.media.AudioManager;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class Util {
+public class Util extends BaseActivity {
 
     public static void manipulatePhone(AudioManager audio, Window window, boolean enabled) {
+
+        WindowManager.LayoutParams layout = window.getAttributes();
 
         if (enabled) {
             // set phone to 'priority mode'
@@ -15,11 +17,14 @@ public class Util {
 
             // dim screen when app starts
 
-            WindowManager.LayoutParams layout = window.getAttributes();
             layout.screenBrightness = 0F;
             window.setAttributes(layout);
         } else {
-            // do nothing
+
+            audio.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+
+            layout.screenBrightness = 1;
+            window.setAttributes(layout);
         }
 
     }

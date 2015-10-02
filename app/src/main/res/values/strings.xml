@@ -22,6 +22,6 @@
         phone to silent-mode\n\t- Set the text to an easily read colour\n\t- Display the most recent text
         message you receive\n\nYou can then respond while respecting those around you </string>
     <string name="settings_title">Theatre SMS</string>
-    <string name="settings_enjoy_movie">Flip the switch when the movie starts</string>
+    <string name="instruction_text">Flip the switch when the show starts</string>
 
 </resources>

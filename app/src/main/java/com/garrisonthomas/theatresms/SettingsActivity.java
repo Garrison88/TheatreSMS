@@ -8,24 +8,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.support.v7.widget.SwitchCompat;
 import android.telephony.SmsMessage;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class SettingsActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
+public class SettingsActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
 
     BroadcastReceiver receiver;
-    private int volume_level;
     private AudioManager am;
     private TextView tv;
     private SwitchCompat toggle_settings;
@@ -37,6 +33,8 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
 
         setContentView(R.layout.layout_settings);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         am = (AudioManager) getSystemService(AUDIO_SERVICE);
 
         tv = (TextView) findViewById(R.id.textview_enjoy_movie);
@@ -46,6 +44,8 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
         toggle_settings = (SwitchCompat) findViewById(R.id.activation_switch);
 
         toggle_settings.setOnCheckedChangeListener(this);
+
+
 
         receiver = new BroadcastReceiver() {
 
@@ -89,14 +89,9 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
     }
 
     @Override
-    protected void onPause() {
-
-        super.onPause();
-
-    }
-
-    @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+        WindowManager.LayoutParams layout = getWindow().getAttributes();
 
         if (isChecked) {
 
@@ -112,8 +107,13 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
             tv.setText("Enjoy the show!");
 
         } else {
+
+            layout.screenBrightness = curBrightnessValue;
+            getWindow().setAttributes(layout);
+
             am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-            this.finish();
+
+            tv.setText(R.string.instruction_text);
 
         }
 
@@ -158,8 +158,6 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
             e.printStackTrace();
         }
 
-
     }
 
 }
-

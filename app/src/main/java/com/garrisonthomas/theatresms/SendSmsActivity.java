@@ -1,6 +1,5 @@
 package com.garrisonthomas.theatresms;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,18 +8,26 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
-public class SendSmsActivity extends Activity {
+import java.util.ArrayList;
 
-//    public ListView msgList;
-//    public ArrayList<ListModel> list;
-//    public ListviewAdapter lvAdapter;
+public class SendSmsActivity extends BaseActivity {
+
+    public ListView msgList;
+    public ArrayList<ListModel> list;
+    public ListviewAdapter lvAdapter;
+
+    EditText etSendMsg;
+    TextView userTimeStamp, userMessageBody, incomingBody, incomingPhoneNumber,
+            incomingTimeStamp;
+    SmsManager sms;
 
     public static final String SENDER_ID = "SENDER_ID";
     public static final String SENDER_MSG = "SENDER_MSG";
@@ -29,8 +36,6 @@ public class SendSmsActivity extends Activity {
     public static final String USER_MSG = "USER_MSG";
     public static final String USER_TIME = "USER_TIME";
 
-    private String senderId;
-    private String senderMsg;
     private String senderTime;
 
     String name;
@@ -40,14 +45,22 @@ public class SendSmsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_message);
 
+        sms = SmsManager.getDefault();
+
+        etSendMsg = (EditText) findViewById(R.id.edit_text_send_sms);
+
+        userTimeStamp = (TextView) findViewById(R.id.user_time_stamp);
+        userMessageBody = (TextView) findViewById(R.id.user_message_body);
+
+        incomingBody = (TextView) findViewById(R.id.incoming_message_body);
+        incomingPhoneNumber = (TextView) findViewById(R.id.incoming_phone_number);
+        incomingTimeStamp = (TextView) findViewById(R.id.incoming_time_stamp);
 
         if (savedInstanceState == null) {
 
-            senderId = ("");
-            senderMsg = ("");
+            String senderId = ("");
+            String senderMsg = ("");
 
-
-        } else {
 
         }
 
@@ -77,38 +90,25 @@ public class SendSmsActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void send_msg(View view) {
+    public void sendMsg(View view) {
 
-        EditText etMessageDescription = (EditText) findViewById(R.id.edit_text_send_sms);
-        TextView senderPhoneNumberTextView = (TextView) findViewById(R.id.sender_id);
+        if (!TextUtils.isEmpty(etSendMsg.getText())) {
 
-        if (etMessageDescription.length() == 0) {
-            // do nothing
-        } else {
+            sms.sendTextMessage(String.valueOf(incomingPhoneNumber.getText()), null,
+                    etSendMsg.getText().toString(), null, null);
 
-            SmsManager sms = SmsManager.getDefault();
-            sms.sendTextMessage(senderPhoneNumberTextView.getText().toString(), null,
-                    etMessageDescription.getText().toString(), null, null);
+            userTimeStamp.setText(DateHelper.getDateTimeFormattedFromMilliseconds(System.currentTimeMillis()));
 
-            TextView userTime = (TextView) findViewById(R.id.time_stamp);
-            userTime.setText(DateHelper.getDateTimeFormattedFromMilliseconds(System.currentTimeMillis()));
+            userMessageBody.setText(etSendMsg.getText());
 
-            TextView phoneNumber = (TextView) findViewById(R.id.user_id);
-            phoneNumber.setText(getString(R.string.user_name));
+            hideKeyboard();
 
-            TextView userMessageBody = (TextView) findViewById(R.id.message_body);
-            userMessageBody.setText(etMessageDescription.getText());
-
-            InputMethodManager imm = (InputMethodManager) getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(etMessageDescription.getWindowToken(), 0);
-
-            etMessageDescription.setText("");
-
+            etSendMsg.setText("");
         }
     }
 
     private String getContactNameFromNumber(String number) {
+
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
                 Uri.encode(number));
 
@@ -134,12 +134,9 @@ public class SendSmsActivity extends Activity {
             Util.manipulatePhone((AudioManager) getSystemService(Context.AUDIO_SERVICE), getWindow(), true);
         }
 
-        TextView senderBody_tv = (TextView) findViewById(R.id.sender_message_body);
-        senderBody_tv.setText(senderMessage);
-        TextView senderPhoneNumber_tv = (TextView) findViewById(R.id.sender_id);
-        senderPhoneNumber_tv.setText(getContactNameFromNumber(senderNumber) + "\n(" + senderNumber + ")");
-        TextView senderTimeStamp_tv = (TextView) findViewById(R.id.sender_time_stamp);
-        senderTimeStamp_tv.setText(senderTimeStamp);
+        incomingBody.setText(senderMessage);
+        incomingPhoneNumber.setText(getContactNameFromNumber(senderNumber) + "\n(" + senderNumber + ")");
+        incomingTimeStamp.setText(senderTimeStamp);
 
     }
 }

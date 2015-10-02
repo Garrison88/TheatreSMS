@@ -2,10 +2,10 @@
 <resources>
 
     <color name="messageColor">#39FF14</color>
-    <color name="textViewColor">#FFFFFF</color>
     <color name="editTextColor">#0DDDFF</color>
     <color name="dividerColor">#9933FF</color>
     <color name="colorPrimary">#008486</color>
     <color name="colorPrimaryDark">#008486</color>
+    <color name="textColorPrimary">#FFFFFF</color>
 
 </resources>
