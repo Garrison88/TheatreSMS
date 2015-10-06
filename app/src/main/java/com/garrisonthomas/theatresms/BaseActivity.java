@@ -1,6 +1,5 @@
 package com.garrisonthomas.theatresms;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -14,14 +13,14 @@ import android.view.inputmethod.InputMethodManager;
  */
 public class BaseActivity extends AppCompatActivity {
 
-    float curBrightnessValue;
+    float currentBrightnessValue;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         try {
-            curBrightnessValue = android.provider.Settings.System.getInt(
+            currentBrightnessValue = android.provider.Settings.System.getInt(
                     getContentResolver(), android.provider.Settings.System.SCREEN_BRIGHTNESS);
         } catch (Settings.SettingNotFoundException e) {
             // TODO Auto-generated catch block

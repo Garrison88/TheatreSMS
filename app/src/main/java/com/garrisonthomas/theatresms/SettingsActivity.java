@@ -1,7 +1,6 @@
 package com.garrisonthomas.theatresms;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,7 +11,6 @@ import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.provider.Settings;
 import android.support.v7.widget.SwitchCompat;
 import android.telephony.SmsMessage;
 import android.view.WindowManager;
@@ -21,7 +19,7 @@ import android.widget.TextView;
 
 public class SettingsActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
 
-    BroadcastReceiver receiver;
+    private BroadcastReceiver receiver;
     private AudioManager am;
     private TextView tv;
     private SwitchCompat toggle_settings;
@@ -44,8 +42,6 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
         toggle_settings = (SwitchCompat) findViewById(R.id.activation_switch);
 
         toggle_settings.setOnCheckedChangeListener(this);
-
-
 
         receiver = new BroadcastReceiver() {
 
@@ -75,7 +71,6 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
                                 startActivity(sendSMSIntent);
                                 vibe.vibrate(100);
 
-
                             }
                         } catch (Exception e) {
 //                            Log.d("Exception caught",e.getMessage());
@@ -95,8 +90,6 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
 
         if (isChecked) {
 
-//            volume_level = am.getStreamVolume(AudioManager.RINGER_MODE_SILENT);
-
             Util.manipulatePhone(am, getWindow(), true);
 
             IntentFilter filter = new IntentFilter();
@@ -108,7 +101,7 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
 
         } else {
 
-            layout.screenBrightness = curBrightnessValue;
+            layout.screenBrightness = currentBrightnessValue;
             getWindow().setAttributes(layout);
 
             am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
@@ -128,6 +121,7 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
 
+                            unregisterReceiver(receiver);
                             SettingsActivity.this.finish();
 
                         }
@@ -141,6 +135,7 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
                     .show();
 
         } else {
+            unregisterReceiver(receiver);
             this.finish();
         }
     }

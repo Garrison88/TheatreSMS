@@ -20,14 +20,10 @@ import java.util.ArrayList;
 
 public class SendSmsActivity extends BaseActivity {
 
-    public ListView msgList;
-    public ArrayList<ListModel> list;
-    public ListviewAdapter lvAdapter;
-
-    EditText etSendMsg;
-    TextView userTimeStamp, userMessageBody, incomingBody, incomingPhoneNumber,
+    private EditText etSendMsg;
+    private TextView userTimeStamp, userMessageBody, incomingBody, incomingPhoneNumber,
             incomingTimeStamp;
-    SmsManager sms;
+    private SmsManager sms;
 
     public static final String SENDER_ID = "SENDER_ID";
     public static final String SENDER_MSG = "SENDER_MSG";
@@ -36,9 +32,7 @@ public class SendSmsActivity extends BaseActivity {
     public static final String USER_MSG = "USER_MSG";
     public static final String USER_TIME = "USER_TIME";
 
-    private String senderTime;
-
-    String name;
+    String senderName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,11 +109,11 @@ public class SendSmsActivity extends BaseActivity {
         Cursor cursor = SendSmsActivity.this.getContentResolver().query(uri,
                 new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
         if (cursor.moveToFirst()) {
-            name = cursor.getString(cursor
+            senderName = cursor.getString(cursor
                     .getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
         }
 
-        return name;
+        return senderName;
 
     }
 

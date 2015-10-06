@@ -21,7 +21,11 @@ public class Util extends BaseActivity {
             window.setAttributes(layout);
         } else {
 
+            // return phone to 'normal mode'
+
             audio.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+
+            // return phone to previous brightness
 
             layout.screenBrightness = 1;
             window.setAttributes(layout);
